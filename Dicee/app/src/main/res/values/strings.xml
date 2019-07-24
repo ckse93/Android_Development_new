@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Dicee</string>
+    <string name="buttonString">Roll</string>
 </resources>
