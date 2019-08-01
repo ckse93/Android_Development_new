@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             }
             case R.id.d_key : {
                 Log.println(Log.INFO, "Key pressed :", "D");
-                msoundpool.play(mCSoundId, 1, 1, 1, 0, 1);
+                msoundpool.play(mDSoundId, 1, 1, 1, 0, 1);
                 break;
             }
             case R.id.e_key : {
@@ -84,14 +84,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case R.id.b_key : {
-                Log.println(Log.INFO,"Key pr essed :","B");
+                Log.println(Log.INFO,"Key pr" +
+                        "essed :","B");
                 msoundpool.play(mBSoundId,1,1,1,0,1);
                 break;
             }
             default :
                 break;
         }
-
     }
-
 }
