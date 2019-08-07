@@ -2,6 +2,10 @@ package com.londonappbrewery.quizzler;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -9,9 +13,11 @@ public class MainActivity extends Activity {
 
 
     // TODO: Declare member variables here:
+    Button trueButton;
+    Button falseButton;
 
 
-    // TODO: Uncomment to create question bank
+//     TODO: Uncomment to create question bank
 //    private TrueFalse[] mQuestionBank = new TrueFalse[] {
 //            new TrueFalse(R.string.question_1, true),
 //            new TrueFalse(R.string.question_2, true),
@@ -32,8 +38,28 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        trueButton = findViewById(R.id.true_button);
+        falseButton = findViewById(R.id.false_button);
 
 
+        View.OnClickListener myListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Quizzler", "True Button Clicked");
+                Toast.makeText(getApplicationContext(), "True pressed", Toast.LENGTH_SHORT).show();
+            }
+        };
 
+        trueButton.setOnClickListener(myListener);
+        falseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Quizzler", "False Button Clicked");
+                Toast.makeText(getApplicationContext(), "false pressed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+
+
 }
