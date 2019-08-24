@@ -17,7 +17,8 @@ public class MainActivity extends Activity {
     Button trueButton;
     Button falseButton;
     TextView textview;
-
+    int mIndex;
+    int score;
 
 //     TODO: Uncomment to create question bank
     private TrueFalse[] mQuestionBank = new TrueFalse[] {
@@ -45,26 +46,62 @@ public class MainActivity extends Activity {
         textview = findViewById(R.id.question_text_view);
 
 
+        updateUI();
         View.OnClickListener myListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("Quizzler", "True Button Clicked");
                 Toast.makeText(getApplicationContext(), "True pressed", Toast.LENGTH_SHORT).show();
+                try {
+                    checkAnswer(true);
+                    updateUI();
+                }catch (Exception e) {
+                    Log.i("","end of the question. performing reset");
+                    reset();
+                }
             }
         };
-
         trueButton.setOnClickListener(myListener);
+
+        // true button uses predefined myListener, and false button uses closure syntax.
+
         falseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("Quizzler", "False Button Clicked");
                 Toast.makeText(getApplicationContext(), "false pressed", Toast.LENGTH_SHORT).show();
+                try {
+                    checkAnswer(false);
+                    updateUI();
+                }catch (Exception e) {
+                    Log.i("","end of the question. performing reset");
+                    reset();
+                }
             }
         });
 
         TrueFalse exampleQuestion = new TrueFalse(R.string.question_1, true);
     }
 
+    private void reset() {
+        score=0;
+        mIndex=0;
+        updateUI();
+    }
 
+    private boolean checkAnswer(boolean input){
+        if (input == mQuestionBank[mIndex].ismAnswer()){
+            score++;
+            mIndex++;
+            return true;
+        }
+        else {
+            mIndex++;
+            return false;
+        }
+    }
 
+    private void updateUI() {
+        textview.setText(mQuestionBank[mIndex].getmQuestionID());
+    }
 }
