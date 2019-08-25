@@ -1,6 +1,8 @@
 package com.londonappbrewery.quizzler;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -86,6 +88,17 @@ public class MainActivity extends Activity {
     }
 
     private void reset() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this); // this refers to MainActivity
+        alert.setTitle("Game Over");
+        alert.setCancelable(true); // alert will be cancelled if user taps outside of the alert window
+        alert.setMessage("Your Score : " + score + " Out of " + mQuestionBank.length);
+        alert.setPositiveButton("Exit application", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        alert.show();
         score=0;
         mIndex=0;
         updateUI();
