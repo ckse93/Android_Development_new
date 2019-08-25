@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,8 @@ public class MainActivity extends Activity {
     Button trueButton;
     Button falseButton;
     TextView textview;
+    TextView scoreview;
+    ProgressBar progressBar;
     int mIndex;
     int score;
 
@@ -44,14 +47,15 @@ public class MainActivity extends Activity {
         trueButton = findViewById(R.id.true_button);
         falseButton = findViewById(R.id.false_button);
         textview = findViewById(R.id.question_text_view);
-
-
+        scoreview = findViewById(R.id.score);
+        progressBar = findViewById(R.id.progress_bar);
         updateUI();
+
         View.OnClickListener myListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("Quizzler", "True Button Clicked");
-                Toast.makeText(getApplicationContext(), "True pressed", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getApplicationContext(), "True pressed", Toast.LENGTH_SHORT).show();
                 try {
                     checkAnswer(true);
                     updateUI();
@@ -69,7 +73,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Log.d("Quizzler", "False Button Clicked");
-                Toast.makeText(getApplicationContext(), "false pressed", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getApplicationContext(), "false pressed", Toast.LENGTH_SHORT).show();
                 try {
                     checkAnswer(false);
                     updateUI();
@@ -79,29 +83,32 @@ public class MainActivity extends Activity {
                 }
             }
         });
-
-        TrueFalse exampleQuestion = new TrueFalse(R.string.question_1, true);
     }
 
     private void reset() {
         score=0;
         mIndex=0;
         updateUI();
+        progressBar.setProgress(100/mQuestionBank.length);
     }
 
     private boolean checkAnswer(boolean input){
         if (input == mQuestionBank[mIndex].ismAnswer()){
             score++;
             mIndex++;
+            Toast.makeText(getApplicationContext(), "KORREKT", Toast.LENGTH_SHORT).show();
             return true;
         }
         else {
             mIndex++;
+            Toast.makeText(getApplicationContext(), "YINKORREKT", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
 
     private void updateUI() {
         textview.setText(mQuestionBank[mIndex].getmQuestionID());
+        scoreview.setText("Score " + score + "/"+mQuestionBank.length);
+        progressBar.incrementProgressBy(100/mQuestionBank.length);
     }
 }
