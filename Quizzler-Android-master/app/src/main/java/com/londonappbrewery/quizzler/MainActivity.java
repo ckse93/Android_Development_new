@@ -46,11 +46,23 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         trueButton = findViewById(R.id.true_button);
         falseButton = findViewById(R.id.false_button);
         textview = findViewById(R.id.question_text_view);
         scoreview = findViewById(R.id.score);
         progressBar = findViewById(R.id.progress_bar);
+
+        if (savedInstanceState != null){  //  if there is any saved data, then load saved instance data.
+            // since updateUI() uses textview variable, you need to launch this after you define those variables.
+            score = savedInstanceState.getInt("ScoreKey");
+            mIndex = savedInstanceState.getInt("IndexKey");
+            Log.i("score : " + score,"mIndex : " + mIndex);
+            updateUI();
+        } else {
+            score = 0;
+            mIndex = 0;
+        }
         updateUI();
 
         View.OnClickListener myListener = new View.OnClickListener() {
@@ -98,7 +110,7 @@ public class MainActivity extends Activity {
                 finish();
             }
         });
-        alert.show();
+        alert.show();  // yeah you need to show it to the user.
         score=0;
         mIndex=0;
         updateUI();
@@ -121,7 +133,15 @@ public class MainActivity extends Activity {
 
     private void updateUI() {
         textview.setText(mQuestionBank[mIndex].getmQuestionID());
-        scoreview.setText("Score " + score + "/"+mQuestionBank.length);
+        scoreview.setText("Score " + score + "/" + mQuestionBank.length);
         progressBar.incrementProgressBy(100/mQuestionBank.length);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {  // this is where you save your state before putting your app in background or screen rotate.
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("ScoreKey", score);
+        outState.putInt("IndexKey", mIndex);
     }
 }
