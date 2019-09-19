@@ -29,13 +29,9 @@ public class WeatherController extends AppCompatActivity {
     // Constants:
     final int REQUEST_CODE = 123;
     final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather";
-    // App ID to use OpenWeather data
-    final String APP_ID = "e72ca729af228beabd5d20e3b7749713";
-    // Time between location updates (5000 milliseconds or 5 seconds)
-    final long MIN_TIME = 5000;
-    // Distance between location updates (1000m or 1km)
-    final float MIN_DISTANCE = 1000;
-
+    final String APP_ID = "e72ca729af228beabd5d20e3b7749713";  // App ID to use OpenWeather data
+    final long MIN_TIME = 5000;  // Time between location updates (5000 milliseconds or 5 seconds)
+    final float MIN_DISTANCE = 1000;  // Distance between location updates (1000m or 1km)
     String LOCATION_PROVIDER = LocationManager.NETWORK_PROVIDER;  // will request location from cell tower or wifi
 
 
@@ -74,7 +70,7 @@ public class WeatherController extends AppCompatActivity {
             getWeatherForCurrentLocation();
         }
         catch (Exception e) {
-            Log.d("Clima", e.toString());
+            Log.d("Clima", "ERROR getting weather data: " + e.toString());
         }
     }
 
@@ -151,7 +147,9 @@ public class WeatherController extends AppCompatActivity {
         client.get(WEATHER_URL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response){
-                Log.d("Clima","Success " + response.toString());
+                Log.d("Clima","Success! JSON data : " + response.toString());
+                WeatherDataModel weatherData = WeatherDataModel.fromJson(response);  // use this convention instead of new WeatherDataModel() whatnot.
+                updateUI(weatherData);
             }
 
             @Override
@@ -164,13 +162,14 @@ public class WeatherController extends AppCompatActivity {
     }
 
 
-
-    // TODO: Add updateUI() here:
-
-
+    private void updateUI(WeatherDataModel weather){
+        mCityLabel.setText(weather.getmCity());
+        mTemperatureLabel.setText(weather.getmTemoerature());
+        int resourceID = getResources().getIdentifier(weather.getmIconName(),"drawable", getPackageName()); // this will look for resource from "drawable folder"
+        mWeatherImage.setImageResource(resourceID);
+    }
 
     // TODO: Add onPause() here:
-
 
 
 }
