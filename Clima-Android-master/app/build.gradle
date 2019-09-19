@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 27  // same as targetSdkVersion
 
     defaultConfig {
         applicationId "com.londonappbrewery.climapm"
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion 16  // oldest version of android this can run
+        targetSdkVersion 27  // we tested upto SDK 27.
         versionCode 1
         versionName "1.0"
     }
@@ -19,7 +19,9 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])  // compile everything in 'libs' directory and include every .jar file
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:appcompat-v7:27.0.2'
+    // add dependency from below and hit "sync now" button and elephant with a blue arrow from right upper corner
+    implementation 'com.loopj.android:android-async-http:1.4.9'  // use 'implementation' instead of compile
 }
