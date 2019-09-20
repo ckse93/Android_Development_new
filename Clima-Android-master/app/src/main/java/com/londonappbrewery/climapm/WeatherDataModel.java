@@ -19,7 +19,7 @@ public static WeatherDataModel fromJson(JSONObject json){
         weatherData.mCondition = json.getJSONArray("weather").getJSONObject(0).getInt("id");
         weatherData.mIconName = updateWeatherIcon(weatherData.mCondition);
         Double tempResult = json.getJSONObject("main").getDouble("temp") - 273.15;  // getting the raw data, and converting to celcius
-        weatherData.mTemoerature = tempResult.toString();
+        weatherData.mTemoerature = String.valueOf((int)Math.round(tempResult));
 
         return weatherData;
     }
