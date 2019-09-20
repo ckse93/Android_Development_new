@@ -1,6 +1,7 @@
 package com.londonappbrewery.climapm;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,8 +55,15 @@ public class WeatherController extends AppCompatActivity {
         mTemperatureLabel = (TextView) findViewById(R.id.tempTV);
         ImageButton changeCityButton = (ImageButton) findViewById(R.id.changeCityButton);
 
-
-        // TODO: Add an OnClickListener to the changeCityButton here:
+        // set an OnClickListener to the changeCityButton
+        // navigation between view are done by Intent feature.
+        changeCityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mIntent = new Intent(WeatherController.this, ChangeCityController.class);  // first param is context, second is where this would send user to
+                startActivity(mIntent);  // now this function will take you to a different view
+            }
+        });
 
     }
 
