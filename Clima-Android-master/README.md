@@ -8,7 +8,19 @@
 you need location access, you need permission. You can set tup permission at **AndroidManifest.xml** file.
   - type `<<uses-permission android:name="android.permission.INTERNET"></uses-permission>` for inteternet access 
   - type `<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>` for COARSE location access.
-3. setup member variable and onResume()
+3. setup member variable
   - you need LOCATION_PROVIDER set as LocationManager.NETWORK_PROVIDER so you can get location from cell tower or wifi
   - declare `LocationManager` and `LocationListener ` type variables
-  - and of course, you nedd `@override onResume()` to go back from landscape mode or from sleep
+4. Write getWeatherForCurrentLocation() method
+  - 
+
+
+and of course, you nedd `@override onResume()` to go back from landscape mode or from sleep
+  ```@Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("Clima", "onResume() called");
+        Log.d("Clima", "Getting weather data..");
+        getWeatherForCurrentLocation();
+    }
+4. 
