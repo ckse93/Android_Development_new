@@ -31,7 +31,9 @@ public class ChangeCityController extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 String newCity = editText.getText().toString();
-                Intent mCityIntent = new Intent(ChangeCityController.this, ) // this will navigate back to weatgher
+                Intent mCityIntent = new Intent(ChangeCityController.this, WeatherController.class); // this will navigate back to weatgher
+                mCityIntent.putExtra("City", newCity);
+                startActivity(mCityIntent);  // as soon as this is called, we will go back to main page
                 return false;
             }
         });

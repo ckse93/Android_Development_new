@@ -64,7 +64,8 @@ public class WeatherController extends AppCompatActivity {
                 startActivity(mIntent);  // now this function will take you to a different view
             }
         });
-
+        Log.d("Clima", "calling getWeatherForCurrentLocation()");
+        getWeatherForCurrentLocation();
     }
 
     @Override
@@ -73,19 +74,34 @@ public class WeatherController extends AppCompatActivity {
         super.onResume();
         Log.d("Clima", "onResume() called");
         Log.d("Clima", "Getting weather data..");
-        try{
-            getWeatherForCurrentLocation();
-        }
-        catch (Exception e) {
-            Log.d("Clima", "ERROR getting weather data: " + e.toString());
+
+        Intent mIntent = getIntent();
+        String city = mIntent.getStringExtra("City");  // THIS IS WHERE YOU GET THE STRING BACK FROM OTHER SCREEN.
+
+        if (city != null) {
+            getWeatherForNewCity(city);
+        } else {
+            try{
+                Log.d("Clima", "getting data for current location");
+                getWeatherForCurrentLocation();
+            }
+            catch (Exception e) {
+                Log.d("Clima", "ERROR getting weather data: " + e.toString());
+            }
         }
     }
 
 
-    // TODO: Add getWeatherForNewCity(String city) here:
+    private void getWeatherForNewCity(String city) {
+        RequestParams params = new RequestParams();
+        params.put("q", city);
+        params.put("appid", APP_ID);
+        letsDoSomeNetworking(params);
+    }
 
 
     private void getWeatherForCurrentLocation() {
+        Log.d("Clima", "getWeatherForCurrentLocation() called");
         mLocationManager = (LocationManager) getSystemService(getBaseContext().LOCATION_SERVICE);  // assigning mLocationManager to be able to get location.
         mLocationListener = new LocationListener() {
             @Override
@@ -176,7 +192,11 @@ public class WeatherController extends AppCompatActivity {
         mWeatherImage.setImageResource(resourceID);
     }
 
-    // TODO: Add onPause() here:
-
-
+    @Override
+    protected void onPause() {  // this is where you free up resource.
+        super.onPause();
+        if(mLocationManager != null) {
+            mLocationManager.removeUpdates(mLocationListener);
+        }
+    }
 }
