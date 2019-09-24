@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         // TODO: Set an OnItemSelected listener on the spinner
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
+            // as soon as you select an item from the drop down menu, this will 1. get the info from the drop down menu
+            // 2. send that info to the server, retrieving the JSON
+            // 3. and parse the JSON to display. (THIS IS DONE IN letsDoSomeNetworking() )
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("Bitc", "" + parent.getItemAtPosition(position));
                 Log.d("Bitc", "" + BASE_URL+parent.getItemAtPosition(position));
@@ -79,10 +82,17 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            @Override
+            @Override//
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // called when response HTTP status is "200 OK"
                 Log.d("Bitc", "JSON: " + response.toString());
+                try {
+                    String price = response.getString("ask");
+                    mPriceTextView.setText(price);
+                }
+                catch (Exception e) {
+                    Log.d("Bitc", "ERROR : " + e.toString());
+                }
             }
 
             @Override
