@@ -166,11 +166,12 @@ public class WeatherController extends AppCompatActivity {
 
 
     private void letsDoSomeNetworking(RequestParams params) {
-        AsyncHttpClient client = new AsyncHttpClient();
+        final AsyncHttpClient client = new AsyncHttpClient();
         client.get(WEATHER_URL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response){
                 Log.d("Clima","Success! JSON data : " + response.toString());
+                Log.d("Clima", "" + client.toString());
                 WeatherDataModel weatherData = WeatherDataModel.fromJson(response);  // use this convention instead of new WeatherDataModel() whatnot.
                 updateUI(weatherData);
             }
