@@ -2,5 +2,6 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/coda</item>
+        <item>@font/cutive</item>
     </array>
 </resources>
