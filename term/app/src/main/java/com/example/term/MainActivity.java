@@ -10,6 +10,9 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,8 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
     // view variables
     TextView mainTextView;
+    EditText editText;
+    String mainText;
 
     // constants and variable for weather
     LocationManager lm;
@@ -31,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     String City;
     Integer REQUEST_CODE = 3333;
     String URL = "https://community-open-weather-map.p.rapidapi.com/weather";
-    String APP_ID = "bc0e697eaemsh75204ba3d5d4ed8p1a2842jsn1ff30169521d";
+    String HOST = "community-open-weather-map.p.rapidapi.com";
+    String KEY = "bc0e697eaemsh75204ba3d5d4ed8p1a2842jsn1ff30169521d";
     WeatherData weather;
 
     @Override
@@ -39,12 +45,41 @@ public class MainActivity extends AppCompatActivity {
         Log.d("term", "onCreate() called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // initialize variables
         mainTextView = findViewById(R.id.mainTextView);
+
+        // setting up edittext and "return" key listener
+        editText = findViewById(R.id.editText);
+        editText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int key, KeyEvent keyEvent) {
+                // if the event is a key-down on the return button
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && key == KeyEvent.KEYCODE_ENTER) {
+                    String command = editText.getText().toString();
+                    if (command.contains("getWeather")) {
+                        mainText = mainText + command + "\n";
+                        getCurrentLocation();
+                    } else {
+                        mainText = mainText + command + "\n" + "INVALID COMMAND. " + "\n";
+                        mainTextView.setText(mainText);
+                    }
+
+
+
+                }
+                return false;
+            }
+        });
         weather = new WeatherData();
 
-        getCurrentLocation();
+        // getCurrentLocation();
     }
+    // edittext command and parser------------------------------------------------------------------
+    private void command(){
+
+    }
+    // edittext command and parser------------------------------------------------------------------
 
 
     // getting current location---------------------------------------------------------------------
@@ -64,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             Double lon = location.getLongitude();
             Double alt = location.getAltitude();
             Log.d("term", "PROVIDER : " + provider + " LATITUDE : " + lat.toString() + " LONGITUDE : "+ lon.toString() + " ALTITUDE : " + alt.toString());
-            getWeather(lon,lat);
+            getWeather(lon,lat,"");
         }
         catch (Exception e ) {
             Log.d("term", "caught"+e.toString());
@@ -88,27 +123,31 @@ public class MainActivity extends AppCompatActivity {
     }
 // getting current location---------------------------------------------------------------------
 // params : latitude, longitute. job : networking and get the weather data from server
-    private void getWeather(Double lon, Double lat) {
+    private void getWeather(Double lon, Double lat, String str) {
         Log.d("tem", "getWeather() called");
+        //  setting up the client and the required headers
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("x-rapidapi-host", HOST);
+        client.addHeader("x-rapidapi-key", KEY);
+        // setting up optinal parameters
         RequestParams params = new RequestParams();
         params.put("lon", lon);
         params.put("lat", lat);
-        params.put("q", "Seoul");
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.addHeader("x-rapidapi-host", "community-open-weather-map.p.rapidapi.com");
-        client.addHeader("x-rapidapi-key", "bc0e697eaemsh75204ba3d5d4ed8p1a2842jsn1ff30169521d");
-        client.get("https://community-open-weather-map.p.rapidapi.com/weather", params, new JsonHttpResponseHandler() {
+        if (!str.equals("")){  // if user provides city name
+            params.put("q", str);
+        }
+
+        client.get(URL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response){
                 Log.d("Clima","Success! JSON data : " + response.toString());
                 weather.setterFromJSON(response);  // now we got the response, lets set the variables.
-                String str = "Weather Data : \n " +
-                        "\tCity : " + weather.getmCity() + "\n" +
+                mainText = mainText + "Weather Data : \n " +
+                        "\tCity : " + weather.getmCity() + ", " + weather.getmCountry() + "\n" +
                         "\tCondition : " + weather.getmCondition() + "\n" +
                         "\tTempC : " + weather.getTempC();
-                mainTextView.setText(str);
+                mainTextView.setText(mainText);
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
                 Log.e("Clima", "FAIL to get internet response " + e.toString());

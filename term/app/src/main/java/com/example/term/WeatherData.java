@@ -8,12 +8,14 @@ public class WeatherData {
     private String mCity;
     private Double mTempRaw;
     private String mCondition;
+    private String mCountry;
 
     public void setterFromJSON (JSONObject json){
         try {
             mCity = json.getString("name");
             mTempRaw = json.getJSONObject("main").getDouble("temp");
             mCondition = conditionInterpreter(json.getJSONArray("weather").getJSONObject(0).getInt("id"));
+            mCountry = json.getJSONObject("sys").getString("country");
         }
         catch (Exception e) {
             Log.d("term", "JSON parsing error : " + e.toString());
@@ -58,6 +60,10 @@ public class WeatherData {
 
     public String getmCity() {
         return mCity;
+    }
+
+    public String getmCountry() {
+        return mCountry;
     }
 
     public String getmCondition() {
