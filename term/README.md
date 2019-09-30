@@ -20,3 +20,8 @@
 - scrollable textview 
   - add "gravity = "bottom"" perperty in the textview xml attribute
   - `setMovementMethod(new ScrollingMovementMethod())`
+- hitting 'return' key to trigger something
+  - set the onKeyListener for the editText like : 
+    - `editText.setOnKeyListener(new View.OnKeyListener)`
+    - this will override onKey method. One of the parameter, `int i` is the keycode, just change i info keycode or smth 
+    - and within the onKey scope, do whatever you want to do if (key == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN)
