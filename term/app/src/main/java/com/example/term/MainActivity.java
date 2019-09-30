@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,8 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
         // initialize variables
         mainTextView = findViewById(R.id.mainTextView);
+        mainTextView.setMovementMethod(new ScrollingMovementMethod());
 
         // setting up edittext and "return" key listener
+        mainText = "";
         editText = findViewById(R.id.editText);
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -57,16 +60,9 @@ public class MainActivity extends AppCompatActivity {
                 // if the event is a key-down on the return button
                 if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && key == KeyEvent.KEYCODE_ENTER) {
                     String command = editText.getText().toString();
-                    if (command.contains("getWeather")) {
-                        mainText = mainText + command + "\n";
-                        getCurrentLocation();
-                    } else {
-                        mainText = mainText + command + "\n" + "INVALID COMMAND. " + "\n";
-                        mainTextView.setText(mainText);
-                    }
-
-
-
+                    command(command);
+                    editText.setText("");
+                    mainTextView.scrollTo(0,0);
                 }
                 return false;
             }
@@ -76,7 +72,24 @@ public class MainActivity extends AppCompatActivity {
         // getCurrentLocation();
     }
     // edittext command and parser------------------------------------------------------------------
-    private void command(){
+    private void command(String str){
+        if (str.contains("getWeather()")) {
+            String[] lst = str.split("\\)");
+            if (lst.length == 1) {  // when user provides no city info
+                mainText = mainText + "\n" + str + "\n";
+                getCurrentLocation();
+            } else {
+                mainText = mainText + "\n" + str + "\n";
+                Log.d("term", "lst[1] : " + lst[1]);
+                getWeather(0.0,0.0, lst[1]);
+            }
+
+        } else {
+            mainText = mainText + "\n" + str + "\n" + "INVALID COMMAND. " + "\n";
+            mainTextView.setText(mainText);
+        }
+
+
 
     }
     // edittext command and parser------------------------------------------------------------------
@@ -147,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                         "\tCondition : " + weather.getmCondition() + "\n" +
                         "\tTempC : " + weather.getTempC();
                 mainTextView.setText(mainText);
+                mainTextView.scrollTo(0,0);
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
