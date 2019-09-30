@@ -15,3 +15,8 @@
 - use `AsyncHttpClient` as the API handler. this is fast and light. only 90kbs of overhead. YEET
 - feed your client variable with header (if you need it, RapidAPI requires you to addHeader, but OpenWeatherMap doesnt. chekc with your API provider)
   - RapidAPI needs `addHeader()` to add headers to client. OpenWeatherMap accepts Params.put(key, value). test out some stuff. play with it
+
+## tips that i used 
+- scrollable textview 
+  - add "gravity = "bottom"" perperty in the textview xml attribute
+  - `setMovementMethod(new ScrollingMovementMethod())`
