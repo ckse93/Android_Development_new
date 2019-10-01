@@ -26,4 +26,11 @@
     - this will override onKey method. One of the parameter, `int i` is the keycode, just change i info keycode or smth 
     - and within the onKey scope, do whatever you want to do if (key == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN)
 ## todo
-- "clear" command
+- "clear" command implementation.
+  - easily done with just setting `mainText = ""`. 
+- housekeeping 
+  - maybe it can be more modulized.
+- using more than 1 viewController? 
+  - not sure. this is a terminal looking app. there isn't really a need for second view controller
+- alias 
+  - need storage or setting permission so i can load up configurations on `onResume()`
