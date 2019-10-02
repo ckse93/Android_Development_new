@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     TextView mainTextView;
     EditText editText;
     String mainText;
+    String clearCommand;  // later when I make alias feature, you will be able to change this.
 
     // constants and variable for weather
     LocationManager lm;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         // setting up edittext and "return" key listener
         mainText = "";
+        clearCommand = "clear";
         editText = findViewById(R.id.editText);
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -84,7 +86,12 @@ public class MainActivity extends AppCompatActivity {
                 getWeather(0.0,0.0, lst[1]);
             }
 
-        } else {
+        }
+        else if (str.contains(clearCommand)) {
+            mainText = mainText + "\n\n\n\n\n\n\n\n\n\n";
+            mainTextView.setText(mainText);
+        }
+        else {
             mainText = mainText + "\n" + str + "\n" + "INVALID COMMAND. " + "\n";
             mainTextView.setText(mainText);
         }
