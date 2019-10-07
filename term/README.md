@@ -3,11 +3,22 @@
 ## how to use
 this is a terminal-looking api based application. In English, user types in command, and the app will get the info from servers.
 Currently supported api calls 
-```getWeather()
+**getWeather()**
+```
+getWeather()
     -> will get weather based on your current location
-    getWeather() seoul
+getWeather() seoul
     -> will get weather in Seoul, Korea
  ```
+ 
+ **clear**
+ ```
+ clear
+ -> will clear out the terminal 
+ ```
+ 
+ to be added : 
+ **bitCoin()** : will get current bicoin price. with no parameter, will return bitcoin value in USD. paramters will include USD, CAD, EU, JPY, KRW and so on
 
 ## build note 
 **1. initial setup**
