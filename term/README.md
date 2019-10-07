@@ -1,5 +1,14 @@
 # Command based weather and bitcoin info getter 
 
+## how to use
+this is a terminal-looking api based application. In English, user types in command, and the app will get the info from servers.
+Currently supported api calls 
+```getWeather()
+    -> will get weather based on your current location
+    getWeather() seoul
+    -> will get weather in Seoul, Korea
+ ```
+
 ## build note 
 **1. initial setup**
 - set up the permission and import the library for you to use. You need interet,location permission and json library and async library.
