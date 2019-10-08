@@ -15,7 +15,7 @@ you need location access, you need permission. You can set tup permission at **A
   - 
 
 
-## How to go to differnt activity 
+## How to go to differnt activity and pass data 
 1. set up an Intent, gice it a parameter for self and the activity you want to jump to 
 2. and call `startActivity(mIntent)` this will launch another activity and your main activity will be at onPause()
 3. from ChangeCity.java, get the string from EditText, this is what will be passed back to MainActivity.java.
