@@ -49,7 +49,8 @@ you need location access, you need permission. You can set tup permission at **A
 ```
 
 and of course, you nedd `@override onResume()` to go back from landscape mode or from sleep
-  ```@Override
+  ```java
+  @Override
     protected void onResume() {
         super.onResume();
         Log.d("Clima", "onResume() called");
