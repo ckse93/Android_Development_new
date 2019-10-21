@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     String price = response.getString("ask");
                     Log.d("term", price);
-                    mainText = mainText + "Bitcoin Price : " + price;
+                    mainText = mainText + "Bitcoin Price : " + price + "USD";
                     mainTextView.setText(mainText);
                 }
                 catch (Exception e) {
