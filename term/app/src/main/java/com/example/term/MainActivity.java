@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     String KEY = "bc0e697eaemsh75204ba3d5d4ed8p1a2842jsn1ff30169521d";
     WeatherData weather;
 
+    // for bitcoin
+    private final String BASE_URL = "https://apiv2.bitcoinaverage.com/indices/global/ticker/BTC";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("term", "onCreate() called");
@@ -80,15 +83,33 @@ public class MainActivity extends AppCompatActivity {
             if (lst.length == 1) {  // when user provides no city info
                 mainText = mainText + "\n" + str + "\n";
                 getCurrentLocation();
-            } else {
+            } else if (lst.length == 2){
                 mainText = mainText + "\n" + str + "\n";
                 Log.d("term", "lst[1] : " + lst[1]);
-                getWeather(0.0,0.0, lst[1]);
+                if (lst[1].contains("-h")) {
+                    mainText = mainText + "\n" + "getWeather() -> gets the current weather based on your location, getWeather() cityName -> gets weather data for specific city \n";
+                    mainTextView.setText(mainText);
+                }
+                getWeather(0.0,0.0, lst[1]);  // this will put 1th element as a city parameter
+            } else {
+                mainText = mainText + "\n" + str + "\n" + "INVALID number of parameter. Type getWeather() -h to get help or not..." +  "\n";
+                mainTextView.setText(mainText);
             }
 
         }
+        // BITCOIN OPERATION
+        else if (str.toLowerCase().contains("bitcoin()")){
+            mainText = mainText + "getting Bitcoin Data...\n";
+            String[] lst = str.split("\\)");
+            if (lst.length == 1) { // getting the data in USD
+                Bitcoin(BASE_URL+"USD");
+            } else {
+                Log.d("term", lst[1]);
+                Bitcoin(BASE_URL+lst[1]);
+            }
+        }
         else if (str.contains(clearCommand)) {
-            mainText = mainText + "\n\n\n\n\n\n\n\n\n\n";
+            mainText = mainText + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
             mainTextView.setText(mainText);
         }
         else {
@@ -175,6 +196,41 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Clima","Status Code " + statusCode);
             }
         });
+    }
+
+    private void Bitcoin(String url) {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(url, null,  new JsonHttpResponseHandler() {
+
+            @Override
+            public void onStart(){
+
+            }
+
+            @Override//
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // called when response HTTP status is "200 OK"
+                Log.d("term", "JSON: " + response.toString());
+                try {
+                    String price = response.getString("ask");
+                    Log.d("term", price);
+                    mainText = mainText + "Bitcoin Price : " + price;
+                    mainTextView.setText(mainText);
+                }
+                catch (Exception e) {
+                    Log.d("term", "ERROR : " + e.toString());
+                }
+            }
+
+            @Override
+            public void onRetry(int retryNo){
+                mainText = mainText + "retrying... \n";
+                mainTextView.setText(mainText);
+            }
+        });
+
+
     }
 
     private void updateUI(){
